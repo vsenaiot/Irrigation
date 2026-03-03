@@ -111,7 +111,7 @@ function startDashboard(){
         card.className="card off";
 
         const img = document.createElement("img");
-        img.src="images/valve.png";
+        img.src="assets/valve.png";
 
         const button = document.createElement("button");
         button.innerText="OFF";
@@ -128,4 +128,5 @@ function startDashboard(){
             set(ref(db, `devices/${motorId}/control/valves/v${i}`), val===1?0:1);
         };
     }
+
 }
