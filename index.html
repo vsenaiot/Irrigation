@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Motor Control Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+
+<h1>⚙️ Motor Control Panel</h1>
+
+<!-- LOGIN FORM -->
+<div id="loginDiv">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+    <button onclick="login()">Login</button>
+    <p id="loginError" style="color:red;"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;">
+
+    <div class="motor-wrapper">
+        <div class="card off" id="motorCard">
+            <img src="images/motor.png" alt="Motor">
+            <button id="motorBtn">OFF</button>
+        </div>
+
+        <div class="values-card">
+            <div>R Phase: <span id="rPhase">0 V</span></div>
+            <div>Y Phase: <span id="yPhase">0 V</span></div>
+            <div>B Phase: <span id="bPhase">0 V</span></div>
+            <div>R Current: <span id="rCurrent">0 A</span></div>
+            <div>Y Current: <span id="yCurrent">0 A</span></div>
+            <div>B Current: <span id="bCurrent">0 A</span></div>
+            <div>Pressure: <span id="pressure">0</span></div>
+            <div>EB Status: <span id="ebStatus">0</span></div>
+            <div>Motor Status: <span id="status">OFF</span></div>
+        </div>
+    </div>
+
+    <h2>Valves</h2>
+    <div class="container" id="valveContainer"></div>
+    <br>
+    <button onclick="logout()">Logout</button>
+</div>
+
+</body>
+</html>
