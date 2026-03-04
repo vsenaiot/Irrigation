@@ -90,7 +90,10 @@ function startDashboard(){
         const data = snap.val();
         if(data){
 
-            document.getElementById("ebStatus").innerText = data.eb_power;
+            const ebElement = document.getElementById("ebStatus");
+            ebElement.innerText = data.eb_power == 1 ? "ON" : "OFF";
+            ebElement.style.color = data.eb_power == 1 ? "#22c55e" : "#ef4444";
+            document.getElementById("status").innerText = data.motor?"ON":"OFF";
             document.getElementById("status").innerText = data.motor?"ON":"OFF";
 
             if(data.motor){
@@ -158,3 +161,4 @@ function startDashboard(){
         };
     }
 }
+
