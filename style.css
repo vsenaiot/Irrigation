@@ -83,18 +83,59 @@ button:hover {
 }
 
 /* ------------------- VALUES CARD ------------------- */
+
 .values-card {
-    width: 200px;
-    padding: 20px;
-    border-radius: 15px;
-    background: #1e293b;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    text-align: left;
-    font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    width: 420px;
+    padding: 25px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
+
+/* Each value box */
+.values-card div {
+    background: rgba(255,255,255,0.05);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+/* Value number styling */
+.values-card span {
+    display: block;
+    margin-top: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #38bdf8;
+}
+
+/* Hover effect */
+.values-card div:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+}
+
+/* Highlight numbers */
+.values-card span {
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+/* Voltage Row - R Y B */
+.values-card div:nth-child(1) { border-left: 4px solid #ef4444; } /* Red */
+.values-card div:nth-child(2) { border-left: 4px solid #facc15; } /* Yellow */
+.values-card div:nth-child(3) { border-left: 4px solid #3b82f6; } /* Blue */
+
+/* Current Row - R Y B */
+.values-card div:nth-child(4) { border-left: 4px solid #ef4444; }
+.values-card div:nth-child(5) { border-left: 4px solid #facc15; }
+.values-card div:nth-child(6) { border-left: 4px solid #3b82f6; }
 
 /* ------------------- VALVE CONTAINER ------------------- */
 .container {
@@ -121,3 +162,4 @@ button:hover {
 .processing {
     animation: blinkRed 0.6s infinite;
 }
+
