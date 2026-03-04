@@ -114,7 +114,7 @@ function startDashboard(){
         title.innerText = "Valve " + i;
 
         const img = document.createElement("img");
-        img.src="images/valve.png";
+        img.src="assets/valve.png";
 
         const button = document.createElement("button");
         button.innerText="OFF";
@@ -140,3 +140,4 @@ function startDashboard(){
         };
     }
 }
+
