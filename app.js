@@ -110,16 +110,12 @@ function startDashboard(){
         const card = document.createElement("div");
         card.className="card off";
 
-        const title = document.createElement("h4");
-        title.innerText = "Valve " + i;
-
         const img = document.createElement("img");
         img.src="assets/valve.png";
 
         const button = document.createElement("button");
         button.innerText="OFF";
 
-        card.appendChild(title);
         card.appendChild(img);
         card.appendChild(button);
         valvesContainer.appendChild(card);
@@ -127,17 +123,11 @@ function startDashboard(){
         valvesButtons.push({card, button, valveId:`v${i}`});
 
         button.onclick = async () => {
-            card.classList.add("processing");
             const snap = await get(ref(db, `devices/${motorId}/control/valves/v${i}`));
             const val = snap.val();
             set(ref(db, `devices/${motorId}/control/valves/v${i}`), val===1?0:1);
-
-            // Stop blinking after 1 second
-            setTimeout(()=>{
-                card.classList.remove("processing");
-            },1000);
-
         };
     }
+
 }
 
