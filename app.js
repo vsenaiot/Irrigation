@@ -64,9 +64,23 @@ function startDashboard(){
 
     // Motor Toggle
     motorBtn.onclick = async () => {
-        const snap = await get(ref(db, `devices/${motorId}/control/motor`));
-        const current = snap.val();
-        set(ref(db, `devices/${motorId}/control/motor`), current===1?0:1);
+        motorCard.classList.add("processing");
+
+    // Read actual motor STATUS
+        const statusSnap = await get(ref(db, `devices/${motorId}/status/motor`));
+        const currentStatus = statusSnap.val();
+
+        if (currentStatus === 1) {
+            // Motor is ON → send OFF command
+            await set(ref(db, `devices/${motorId}/control/motor`), 0);
+        } else {
+            // Motor is OFF → send ON command
+            await set(ref(db, `devices/${motorId}/control/motor`), 1);
+        }
+
+        setTimeout(() => {
+            motorCard.classList.remove("processing");
+        }, 1000);
     };
 
     // Motor Sensors
@@ -167,5 +181,6 @@ function startDashboard(){
         };
     }
 }
+
 
 
