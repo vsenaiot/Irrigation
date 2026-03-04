@@ -149,10 +149,16 @@ function startDashboard(){
 
             // Start blinking
             card.classList.add("processing");
+            const statusSnap = await get(ref(db, `devices/${motorId}/status/valves/v${i}`));
+            const currentStatus = statusSnap.val();
 
-            const snap = await get(ref(db, `devices/${motorId}/control/valves/v${i}`));
-            const val = snap.val();
-            set(ref(db, `devices/${motorId}/control/valves/v${i}`), val===1?0:1);
+            if (currentStatus === 1) {
+                // Valve is ON → send OFF command
+                await set(ref(db, `devices/${motorId}/control/valves/v${i}`), 0);
+            } else {
+                // Valve is OFF → send ON command
+                await set(ref(db, `devices/${motorId}/control/valves/v${i}`), 1);
+            }
 
             // Stop blinking after 1 second
             setTimeout(()=>{
@@ -161,4 +167,5 @@ function startDashboard(){
         };
     }
 }
+
 
