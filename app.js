@@ -24,7 +24,6 @@ const motorId = "device_001";
 // References for dashboard elements
 const motorCard = document.getElementById("motorCard");
 const motorBtn = document.getElementById("motorBtn");
-const motorControlRef = ref(db, `devices/${motorId}/control`);
 const motorValuesRef = ref(db, `devices/${motorId}/sensors`);
 const motorStatusRef = ref(db, `devices/${motorId}/status`);
 const valvesContainer = document.getElementById("valveContainer");
@@ -35,7 +34,9 @@ window.login = function() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     signInWithEmailAndPassword(auth, email, password)
-        .catch(err => { document.getElementById("loginError").innerText = err.message; });
+        .catch(err => {
+            document.getElementById("loginError").innerText = err.message;
+        });
 };
 
 // --- LOGOUT ---
@@ -57,7 +58,9 @@ onAuthStateChanged(auth, user => {
 
 // --- START DASHBOARD AFTER LOGIN ---
 function startDashboard(){
+
     valvesContainer.innerHTML = "";
+    valvesButtons.length = 0;
 
     // Motor Toggle
     motorBtn.onclick = async () => {
@@ -86,20 +89,32 @@ function startDashboard(){
     onValue(motorStatusRef, snap=>{
         const data = snap.val();
         if(data){
+
             document.getElementById("ebStatus").innerText = data.eb_power;
             document.getElementById("status").innerText = data.motor?"ON":"OFF";
 
             if(data.motor){
-                motorCard.classList.add("on"); motorCard.classList.remove("off"); motorBtn.innerText="ON";
+                motorCard.classList.add("on");
+                motorCard.classList.remove("off");
+                motorBtn.innerText="ON";
             } else {
-                motorCard.classList.add("off"); motorCard.classList.remove("on"); motorBtn.innerText="OFF";
+                motorCard.classList.add("off");
+                motorCard.classList.remove("on");
+                motorBtn.innerText="OFF";
             }
 
             if(data.valves){
-                valvesButtons.forEach((v,i)=>{
+                valvesButtons.forEach((v)=>{
                     const val = data.valves[v.valveId];
-                    if(val===1){ v.card.classList.add("on"); v.card.classList.remove("off"); v.button.innerText="ON"; }
-                    else { v.card.classList.add("off"); v.card.classList.remove("on"); v.button.innerText="OFF"; }
+                    if(val===1){
+                        v.card.classList.add("on");
+                        v.card.classList.remove("off");
+                        v.button.innerText="ON";
+                    } else {
+                        v.card.classList.add("off");
+                        v.card.classList.remove("on");
+                        v.button.innerText="OFF";
+                    }
                 });
             }
         }
@@ -107,6 +122,7 @@ function startDashboard(){
 
     // Create valves
     for(let i=1;i<=8;i++){
+
         const card = document.createElement("div");
         card.className="card off";
 
@@ -114,7 +130,7 @@ function startDashboard(){
         title.innerText = "Valve " + i;
 
         const img = document.createElement("img");
-        img.src="assets/valve.png";
+        img.src="assets/valve.png";  // ✅ corrected path
 
         const button = document.createElement("button");
         button.innerText="OFF";
@@ -127,7 +143,10 @@ function startDashboard(){
         valvesButtons.push({card, button, valveId:`v${i}`});
 
         button.onclick = async () => {
+
+            // Start blinking
             card.classList.add("processing");
+
             const snap = await get(ref(db, `devices/${motorId}/control/valves/v${i}`));
             const val = snap.val();
             set(ref(db, `devices/${motorId}/control/valves/v${i}`), val===1?0:1);
@@ -136,7 +155,6 @@ function startDashboard(){
             setTimeout(()=>{
                 card.classList.remove("processing");
             },1000);
-
         };
     }
 }
