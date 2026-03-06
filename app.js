@@ -140,7 +140,6 @@ function startDashboard(){
             ebElement.innerText = data.eb_power == 1 ? "ON" : "OFF";
             ebElement.style.color = data.eb_power == 1 ? "#22c55e" : "#ef4444";
             document.getElementById("status").innerText = data.motor?"ON":"OFF";
-            document.getElementById("status").innerText = data.motor?"ON":"OFF";
 
             if(data.motor){
                 motorCard.classList.add("on");
@@ -213,6 +212,7 @@ function startDashboard(){
         };
     }
 }
+
 
 
 
