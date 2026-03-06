@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
 // --- Firebase Config ---
 const firebaseConfig = {
     apiKey: "AIzaSyCQcgEN51zZ3wnQGt3cd2cTBKpfsR55VEU",
@@ -18,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth();
+const messaging = getMessaging(app);
 
 const motorId = "device_001";
 
@@ -43,17 +44,48 @@ window.login = function() {
 window.logout = function() {
     signOut(auth);
 };
+// Request Notification Permission
+async function enableNotifications(){
+
+    const permission = await Notification.requestPermission();
+
+    if(permission === "granted"){
+
+        const token = await getToken(messaging, {
+            vapidKey: "BPc0_ZIEfRqKyJlhbXfA4TG0s6e300LLyR-R4fdHoL2YI-y9GmD0Lfe2aZP1dStGqW5U30H-1zZBbSZZ1vRZNgs"
+        });
+
+        console.log("FCM Token:", token);
+
+        await set(
+            ref(db, `devices/${motorId}/notification_token`),
+            token
+        );
+    }
+}
 
 // --- Auth Listener ---
 onAuthStateChanged(auth, user => {
     if(user){
         document.getElementById("loginDiv").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
+        enableNotifications(); 
         startDashboard();
     } else {
         document.getElementById("loginDiv").style.display = "block";
         document.getElementById("dashboard").style.display = "none";
     }
+});
+
+// Incoming Notifications
+onMessage(messaging, (payload) => {
+
+    console.log("Notification received:", payload);
+
+    new Notification(payload.notification.title, {
+        body: payload.notification.body
+    });
+
 });
 
 // --- START DASHBOARD AFTER LOGIN ---
@@ -181,6 +213,7 @@ function startDashboard(){
         };
     }
 }
+
 
 
 
